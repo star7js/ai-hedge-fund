@@ -112,7 +112,7 @@ def search_line_items(
         "period": period,
         "limit": limit,
     }
-    response = requests.post(url, headers=headers, json=body)
+    response = requests.post(url, headers=headers, json=body, timeout=60)
     if response.status_code != 200:
         raise Exception(f"Error fetching data: {ticker} - {response.status_code} - {response.text}")
     data = response.json()
