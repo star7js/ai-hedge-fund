@@ -4,6 +4,7 @@ import requests
 import time
 from colorama import Fore, Style
 import questionary
+from security import safe_requests
 
 def ensure_ollama_and_model(model_name: str, ollama_url: str) -> bool:
     """Ensure the Ollama model is available in a Docker environment."""
@@ -33,7 +34,7 @@ def ensure_ollama_and_model(model_name: str, ollama_url: str) -> bool:
 def is_ollama_available(ollama_url: str) -> bool:
     """Check if Ollama service is available in Docker environment."""
     try:
-        response = requests.get(f"{ollama_url}/api/version", timeout=5)
+        response = safe_requests.get(f"{ollama_url}/api/version", timeout=5)
         if response.status_code == 200:
             return True
             
@@ -48,7 +49,7 @@ def is_ollama_available(ollama_url: str) -> bool:
 def get_available_models(ollama_url: str) -> list:
     """Get list of available models in Docker environment."""
     try:
-        response = requests.get(f"{ollama_url}/api/tags", timeout=5)
+        response = safe_requests.get(f"{ollama_url}/api/tags", timeout=5)
         if response.status_code == 200:
             models = response.json().get("models", [])
             return [m["name"] for m in models]
